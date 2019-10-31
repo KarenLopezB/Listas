@@ -21,23 +21,57 @@ namespace ListBox
     /// </summary>
     public partial class MainWindow : Window
     {
-        ObservableCollection<string> Colores = new ObservableCollection<string>();
+        ObservableCollection<Color> Colores = new ObservableCollection<Color>();
         public MainWindow()
         {
             InitializeComponent();
-            Colores.Add("Rojo");
-            Colores.Add("Verde");
-            Colores.Add("Azul");
-            Colores.Add("Amarillo");
+            Colores.Add(new Color("Rojo", "#FF0000", "(255,0,0)"));
+            Colores.Add(new Color("Verde", "#00FF00", "(0,255,0)"));
+            Colores.Add(new Color("Azul", "#0000FF", "(0,0,255)"));
 
             lstColores.ItemsSource = Colores;
-            
+
         }
 
-        private void BtnNuevoColor_Click(object sender, RoutedEventArgs e)
+        private void btnNuevoColor_Click(object sender, RoutedEventArgs e)
         {
-            Colores.Add(txtColor.Text);
-            txtColor.Text =  "";
+            /*Colores.Add(txtbox1.Text);
+            txtbox1.Text = "";*/
+
+            Colores.Add(new Color(txtbox1.Text, txtbox2.Text, txtbox3.Text));
+            txtbox1.Text = "";
+            txtbox2.Text = "";
+            txtbox3.Text = "";
+
+        }
+
+        private void btnEliminar_Click(object sender, RoutedEventArgs e)
+        {
+            if (lstColores.SelectedIndex != -1)
+            {
+                Colores.RemoveAt(lstColores.SelectedIndex);
+            }
+        }
+
+        private void lstColores_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (lstColores.SelectedIndex != -1)
+            {
+                txtboxNombreA.Text = Colores[lstColores.SelectedIndex].Nombre;
+                txtboxHexA.Text = Colores[lstColores.SelectedIndex].Hexadecimal;
+                txtboxRgbA.Text = Colores[lstColores.SelectedIndex].RGB;
+            }
+        }
+
+        private void btnActualizar_Click(object sender, RoutedEventArgs e)
+        {
+            if (lstColores.SelectedIndex != -1)
+            {
+                Colores[lstColores.SelectedIndex].Nombre = txtboxNombreA.Text;
+                Colores[lstColores.SelectedIndex].Hexadecimal = txtboxHexA.Text;
+                Colores[lstColores.SelectedIndex].RGB = txtboxRgbA.Text;
+            }
+            lstColores.Items.Refresh();
         }
     }
 }
